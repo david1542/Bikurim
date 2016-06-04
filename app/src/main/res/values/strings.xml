@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ביקורים</string>
+    <string name="action_settings">הגדרות</string>
+    <string name="drawer_name">תפריט</string>
+    <string name="drawer_open">פתוח</string>
+    <string name="drawer_close">סגור</string>
+    <string name="title_activity_splash">SplashActivity</string>
+</resources>
