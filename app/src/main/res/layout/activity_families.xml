@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/colorActivityBackground"
-    tools:context="bikurim.silverfix.com.bikurim.FamiliesActivity">
+    tools:context=".MainActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="4dp"
-                android:theme="@style/AppTheme.AppBarOverlay"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-    </android.support.design.widget.AppBarLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rv"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            android:focusable="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <include layout="@layout/content_families" />
-    <include layout="@layout/nav_drawer_layout"/>
+    </android.support.v4.widget.NestedScrollView>
+
+    <include layout="@layout/nav_drawer" />
+    <include layout="@layout/tool_bar" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

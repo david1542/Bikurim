@@ -5,4 +5,15 @@
     <string name="drawer_open">פתוח</string>
     <string name="drawer_close">סגור</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="search_hint">חיפוש</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="add_message">מלא את הפרטים הבאים:</string>
+    <string name="proceed">הוסף</string>
+    <string name="cancel">בטל</string>
+    <string name="add_query_hint">שם משפחה</string>
+    <string name="add_checkbox_query">הארכת זמן</string>
+    <string name="check_box_snackbar">הנוספו 15 דקות הארכת זמן</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
