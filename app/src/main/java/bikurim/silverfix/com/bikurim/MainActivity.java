@@ -2,13 +2,12 @@ package bikurim.silverfix.com.bikurim;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,36 +16,32 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import java.util.ArrayList;
 
-import bikurim.silverfix.com.bikurim.adapters.DividerItemDecoration;
-import bikurim.silverfix.com.bikurim.adapters.MenuDrawerAdapter;
 import bikurim.silverfix.com.bikurim.adapters.RecyclerViewAdapter;
-import bikurim.silverfix.com.bikurim.items.AddFragment;
+import bikurim.silverfix.com.bikurim.fragments.AddFragment;
 import bikurim.silverfix.com.bikurim.items.FamilyItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final String ADD_DIALOG_TAG = "AddDialog";
+    // Fragments Tags
+    private final String ADD_TAG = "AddDialog";
+    private final String DRAWER_TAG = "AddDialog";
+    // The Data Set
     private ArrayList<FamilyItem> families = new ArrayList<FamilyItem>();
-    private ArrayList<bikurim.silverfix.com.bikurim.items.MenuItem> items = new ArrayList<bikurim.silverfix.com.bikurim.items.MenuItem>();
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
-    private RecyclerView recyclerView, menuView;
+    private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    private MenuDrawerAdapter navAdapter;
     private SearchView searchView;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
     private AddFragment addDialog;
     private CheckBox checkBox;
+    private Toolbar toolbar;
     private FragmentManager fm;
 
     @Override
@@ -54,104 +49,87 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_families);
         // Setting up the tool bar
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Setting up the main lists and their adapters
         fillList();
-        createMenuItems();
         recyclerView = (RecyclerView) findViewById(R.id.rv);
-        menuView = (RecyclerView) findViewById(R.id.right_drawer);
         adapter = new RecyclerViewAdapter(families);
-        navAdapter = new MenuDrawerAdapter(items);
         // Default Animator
         DefaultItemAnimator animator = new DefaultItemAnimator();
         /* Setting up some basic features */
         recyclerView.setItemAnimator(animator);
-        menuView.setItemAnimator(animator);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        menuView.setLayoutManager(new LinearLayoutManager(this));
-        menuView.setAdapter(navAdapter);
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this);
-        menuView.addItemDecoration(itemDecoration);
         recyclerView.setNestedScrollingEnabled(false);
-        Log.d("Menu Items Count:", ""+navAdapter.getItemCount());
-        // Setting up the navigation drawer side-menu with DrawerLayout
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        // Drawer toggle is now instantiated in order to control the state of the navigation drawer
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-            /** Called when a drawer is in closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(R.string.app_name);
-                drawerLayout.setVisibility(View.GONE);
-            }
 
-            /** Called when a drawer is in open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(R.string.drawer_name);
-            }
-        };
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerLayout.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        // A reference to the FragmentManager is created
         fm = getSupportFragmentManager();
+
+        // Initializing necessary fragments
         addDialog = new AddFragment();
+
+        // A basic functionallity is given to the floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addDialog.show(fm, ADD_DIALOG_TAG);
+                if (fm.findFragmentByTag(ADD_TAG) == null) {
+                    // Adding the new fragment to the activity
+                    addFragment(addDialog, ADD_TAG);
+                    return;
+                }
+                addDialog.show(fm, ADD_TAG);
             }
         });
+
+        // Initializing Drawer Layout and ActionBarToggle
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                toolbar.setTitle(R.string.app_name);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                toolbar.setTitle(R.string.drawer_open);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Support in hebrew - Sets layout direction Right to Left
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
     private void fillList() {
-        families.add(new FamilyItem("Ohayon", "12:36"));
-        families.add(new FamilyItem("Zohar", "14:23"));
-        families.add(new FamilyItem("Lasry", "15:55"));
-        families.add(new FamilyItem("Zambuzak", "17:45"));
-        families.add(new FamilyItem("Cohen", "11:33"));
-        families.add(new FamilyItem("Tapera", "09:25"));
-        families.add(new FamilyItem("Ochuya", "09:25"));
-        families.add(new FamilyItem("Konichiwua", "09:25"));
-        families.add(new FamilyItem("Kontaktiwa", "09:25"));
-    }
-
-    private void createMenuItems() {
-        items.add(new bikurim.silverfix.com.bikurim.items.MenuItem(R.drawable.about, "עזרה"));
-        items.add(new bikurim.silverfix.com.bikurim.items.MenuItem(R.drawable.settings, "הגדרות"));
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-            return;
-        }
-
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        long time = 70000;
+        families.add(new FamilyItem("זוהר", time));
+        families.add(new FamilyItem("אוחיון", time));
+        families.add(new FamilyItem("לסרי", time));
+        families.add(new FamilyItem("זמבוזק", time));
+        families.add(new FamilyItem("כהן", time));
+        families.add(new FamilyItem("טפרה", time));
+        families.add(new FamilyItem("קצורה", time));
+        families.add(new FamilyItem("מנחם", time));
+        families.add(new FamilyItem("חשמונאי", time));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_families, menu);
+        getMenuInflater().inflate(R.menu.families_menu, menu);
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -179,14 +157,33 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            drawerLayout.setVisibility(View.VISIBLE);
-            return true;
-        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void addFragment(Fragment fragment, String tag) {
+        FragmentTransaction fragmentTransaction =
+                fm.beginTransaction();
+        fragmentTransaction.add(fragment, tag);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        //Checking if the item is in checked state or not, if not make it in checked state
+        if (item.isChecked()) item.setChecked(false);
+        else item.setChecked(true);
+
+        //Closing drawer on item click
+        drawerLayout.closeDrawers();
+
+        //Check to see which item was being clicked and perform appropriate action
+        switch (item.getItemId()) {
+
+        }
+        return true;
     }
 }

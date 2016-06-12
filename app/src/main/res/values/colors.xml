@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorAccent">#33CCCC</color>
     <color name="colorActivityBackground">#e6e6e6</color>
+    <color name="menuHeader">#3C92C7</color>
     <color name="menuTextColor">#4D495C</color>
 </resources>

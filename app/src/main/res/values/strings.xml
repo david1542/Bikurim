@@ -13,7 +13,13 @@
     <string name="add_query_hint">שם משפחה</string>
     <string name="add_checkbox_query">הארכת זמן</string>
     <string name="check_box_snackbar">הנוספו 15 דקות הארכת זמן</string>
+    <string name="menu_about">אודות</string>
+    <string name="menu_settings">הגדרות</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

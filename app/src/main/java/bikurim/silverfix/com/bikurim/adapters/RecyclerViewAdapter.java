@@ -25,21 +25,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.families = families;
         tempArray = new ArrayList<FamilyItem>();
         tempArray.addAll(families);
-        Log.d("tempArray: ", "" + tempArray.size());
-        Log.d("families: ", "" + families.size());
     }
 
     @Override
-    public PersonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerViewAdapter.PersonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_list_item, parent, false);
-        PersonViewHolder pvh = new PersonViewHolder(v);
+        RecyclerViewAdapter.PersonViewHolder pvh = new RecyclerViewAdapter.PersonViewHolder(v);
         return pvh;
     }
 
     @Override
-    public void onBindViewHolder(PersonViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewAdapter.PersonViewHolder holder, int position) {
+        FamilyItem familyItem = families.get(position);
+        familyItem.setViewHolder(holder);
+        familyItem.setUpTimer();
         holder.personLname.setText(families.get(position).lastName);
-        holder.timeLeft.setText(families.get(position).timeLeft);
     }
 
     @Override
@@ -59,11 +59,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public static class PersonViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        TextView personLname;
-        TextView timeLeft;
+        public CardView cv;
+        public TextView personLname;
+        public TextView timeLeft;
 
-        PersonViewHolder(View itemView) {
+        public PersonViewHolder(View itemView) {
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cv);
             personLname = (TextView) itemView.findViewById(R.id.person_Lname);

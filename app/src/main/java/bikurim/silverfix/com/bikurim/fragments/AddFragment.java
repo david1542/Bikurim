@@ -1,4 +1,4 @@
-package bikurim.silverfix.com.bikurim.items;
+package bikurim.silverfix.com.bikurim.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;

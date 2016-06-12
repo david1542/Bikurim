@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="15sp">
 
     <EditText
@@ -11,11 +12,11 @@
         android:hint="@string/add_query_hint"/>
 
     <CheckBox
+        android:id="@+id/check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_checkbox_query"
-        android:id="@+id/check_box"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/edit_query"
-        android:layout_alignEnd="@id/edit_query"
-        android:layoutDirection="rtl"/>
+        android:layoutDirection="rtl"
+        android:text="@string/add_checkbox_query" />
 </RelativeLayout>
