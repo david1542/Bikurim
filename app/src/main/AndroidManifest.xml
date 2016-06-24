@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".FamilyListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -33,6 +33,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <receiver android:name=".OnAlarmReceiver" />
     </application>
 
 </manifest>

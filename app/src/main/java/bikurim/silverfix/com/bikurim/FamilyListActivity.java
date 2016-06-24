@@ -1,13 +1,18 @@
 package bikurim.silverfix.com.bikurim;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +29,14 @@ import android.widget.CheckBox;
 import java.util.ArrayList;
 
 import bikurim.silverfix.com.bikurim.adapters.RecyclerViewAdapter;
+import bikurim.silverfix.com.bikurim.database.FamiliesTablesContract;
+import bikurim.silverfix.com.bikurim.database.FamilyDatabaseHelper;
 import bikurim.silverfix.com.bikurim.fragments.AddFragment;
 import bikurim.silverfix.com.bikurim.items.FamilyItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FamilyListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    // Fragments Tags
+    // Fragments Tagד
     private final String ADD_TAG = "AddDialog";
     private final String DRAWER_TAG = "AddDialog";
     // The Data Set
@@ -44,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private FragmentManager fm;
 
+    private LocalBroadcastReceiver receiver;
+
+    private FamilyDatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +63,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Setting up the main lists and their adapters
         fillList();
+        // Setting up the main lists and their adapters
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         adapter = new RecyclerViewAdapter(families);
+        // Setting up the database helper
+        dbHelper = new FamilyDatabaseHelper(this);
+        /* LocalBroadcastReceiver is used to notify the activity that a task
+        has been added by the user
+        * */
+        receiver = new LocalBroadcastReceiver();
         // Default Animator
         DefaultItemAnimator animator = new DefaultItemAnimator();
         /* Setting up some basic features */
@@ -113,17 +130,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
+    @Override
+    protected void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                receiver,
+                new IntentFilter(Constants.Intent.SAVE_ACTION));
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onPause();
+    }
+
     private void fillList() {
-        long time = 70000;
-        families.add(new FamilyItem("זוהר", time));
-        families.add(new FamilyItem("אוחיון", time));
-        families.add(new FamilyItem("לסרי", time));
-        families.add(new FamilyItem("זמבוזק", time));
-        families.add(new FamilyItem("כהן", time));
-        families.add(new FamilyItem("טפרה", time));
-        families.add(new FamilyItem("קצורה", time));
-        families.add(new FamilyItem("מנחם", time));
-        families.add(new FamilyItem("חשמונאי", time));
+        long time = System.currentTimeMillis() + 1800000;
+        families.add(new FamilyItem("זוהר", time + 6000));
+        families.add(new FamilyItem("אוחיון", time + 2000));
+        families.add(new FamilyItem("לסרי", time + 7000));
+        families.add(new FamilyItem("זמבוזק", time + 1000));
+        families.add(new FamilyItem("כהן", time - 4000));
+        families.add(new FamilyItem("טפרה", time - 10000));
+        families.add(new FamilyItem("קצורה", time + 9000));
+        families.add(new FamilyItem("מנחם", time + 1000));
+        families.add(new FamilyItem("חשמונאי", time + 12000));
     }
 
     @Override
@@ -185,5 +216,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         return true;
+    }
+
+    private class LocalBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals("SAVE_STATE")) {
+                String familyName = intent.getStringExtra(Constants.Intent.FAMILY_NAME);
+                boolean isChecked = intent.getBooleanExtra(Constants.Intent.IS_CHECKED, false);
+                long time = (isChecked) ? Constants.Intent.EXTRA_TIME : Constants.Intent.DEFAULT_TIME;
+                String dateTime = intent.getStringExtra(Constants.Intent.DATE_TIME);
+                families.add(new FamilyItem(familyName, time));
+                ContentValues values = new ContentValues();
+                values.put(FamiliesTablesContract.NAME_COLUMN, familyName);
+                values.put(FamiliesTablesContract.DATE_COLUMN, dateTime);
+                values.put(FamiliesTablesContract.TIME_COLUMN, time);
+                dbHelper.insert(values);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
