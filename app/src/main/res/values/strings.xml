@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ביקורים</string>
+    <string name="archive_activity">ארכיון</string>
     <string name="action_settings">הגדרות</string>
     <string name="drawer_name">תפריט</string>
     <string name="drawer_open">פתוח</string>
@@ -8,16 +9,33 @@
     <string name="search_hint">חיפוש</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="add_message">מלא את הפרטים הבאים:</string>
-    <string name="proceed">הוסף</string>
-    <string name="cancel">בטל</string>
+    <string name="proceed_add_dialog">הוסף</string>
+    <string name="cancel_add_dialog">בטל</string>
     <string name="add_query_hint">שם משפחה</string>
     <string name="add_checkbox_query">הארכת זמן</string>
     <string name="check_box_snackbar">הנוספו 15 דקות הארכת זמן</string>
     <string name="menu_about">אודות</string>
     <string name="menu_settings">הגדרות</string>
+    <string name="menu_archive">ארכיון</string>
+    <string name="action_search_title">חיפוש</string>
+    <string name="action_clear_title">איפוס מסד</string>
+    <string name="time_up_message">נגמר הזמן</string>
+    <string name="visitors_message">מספר מבקרים:</string>
+    <string name="confirmation_message">האם אתה בטוח שברצונך למחוק?</string>
+    <string name="proceed_dialog">אישור</string>
+    <string name="cancel_dialog">בטל</string>
+    <string name="action_date_title">בחר תאריך</string>
+    <string name="name_and_date_title">שם משפחה/תאריך</string>
+    <string name="visitors_title">מספר מבקרים</string>
+    <string name="date_picker_message">בחר תאריך:</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Sorting Strings titles -->
+    <string name="action_sort_time">מיין מהזמן הנמוך לגבוה</string>
+    <string name="action_sort_names">מיין לפי שמות משפחה</string>
+    <string name="action_sort_visitors">מיין לפי מספר מבקרים</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

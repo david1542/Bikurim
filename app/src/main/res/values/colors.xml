@@ -6,4 +6,5 @@
     <color name="colorActivityBackground">#e6e6e6</color>
     <color name="menuHeader">#3C92C7</color>
     <color name="menuTextColor">#4D495C</color>
+    <color name="time_up_bg">#FFE6E6</color>
 </resources>

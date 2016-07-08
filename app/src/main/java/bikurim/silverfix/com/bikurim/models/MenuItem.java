@@ -1,4 +1,4 @@
-package bikurim.silverfix.com.bikurim.items;
+package bikurim.silverfix.com.bikurim.models;
 
 /**
  * Created by Guy on 08/06/2016.

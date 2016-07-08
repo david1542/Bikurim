@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/option_archive"
+            android:icon="@drawable/archive"
+            android:title="@string/menu_archive" />
+        <item
             android:id="@+id/option_about"
             android:icon="@drawable/about"
             android:title="@string/menu_about" />

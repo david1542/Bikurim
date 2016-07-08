@@ -2,17 +2,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".FamilyListActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+
+    <!-- Overflow items-->
+    <item android:id="@+id/action_sort_time"
+        android:title="@string/action_sort_time"
+        app:showAsAction="never">
+    </item>
+
+    <item android:id="@+id/action_sort_names"
+        android:title="@string/action_sort_names"
+        app:showAsAction="never">
+    </item>
+
+    <item android:id="@+id/action_sort_visitors"
+        android:title="@string/action_sort_visitors"
+        app:showAsAction="never">
+    </item>
+
+    <!-- AppBar items -->
+
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/search"
         android:orderInCategory="200"
-        android:title="חיפוש"
+        android:title="@string/action_search_title"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"
-        ></item>
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@drawable/clear"
+        android:orderInCategory="300"
+        android:title="@string/action_clear_title"
+        app:showAsAction="ifRoom|collapseActionView" />
+
 </menu>
