@@ -1,4 +1,4 @@
-package bikurim.silverfix.com.bikurim.utils;
+package bikurim.silverfix.com.bikurim.utils.components;
 
 /**
  * Created by דודו on 01/07/2016.

@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 
+import bikurim.silverfix.com.bikurim.Constants;
 import bikurim.silverfix.com.bikurim.database.DatabaseHelper;
 import bikurim.silverfix.com.bikurim.database.FamiliesTablesContract;
 import bikurim.silverfix.com.bikurim.database.TempTablesContract;
@@ -23,7 +24,7 @@ public class DatabaseManager {
 
     }
 
-    public Cursor getFamilies() {
+    public Cursor getAllFamilies() {
         return dbHelper.getEntries(FamiliesTablesContract.TABLE_NAME);
     }
 
@@ -31,28 +32,45 @@ public class DatabaseManager {
         return dbHelper.getEntries(TempTablesContract.TABLE_NAME);
     }
 
+    public Cursor getLastFamilies() {
+        String whereClause = FamiliesTablesContract.DATE_COLUMN + "=?";
+        String[] arg = {"(SELECT MAX(" + FamiliesTablesContract.DATE_COLUMN + ") FROM " +
+                        FamiliesTablesContract.TABLE_NAME + ")"};
+        Cursor cursor = query(FamiliesTablesContract.TABLE_NAME, whereClause, null, null);
+        cursor.moveToFirst();
+
+        long newestDate = cursor.getLong(cursor.getColumnIndexOrThrow(FamiliesTablesContract.DATE_COLUMN));
+        long limit = newestDate - Constants.Values.LIMIT_TO_DAY;
+        whereClause = FamiliesTablesContract.DATE_COLUMN + ">=?";
+        String[] args = {"" + limit};
+
+        Cursor results = dbHelper.query(FamiliesTablesContract.TABLE_NAME, whereClause, args, FamiliesTablesContract.DATE_COLUMN + " DESC");
+
+        return results;
+    }
     public long addFamily(Family family) {
         ContentValues values = new ContentValues();
-        values.put(FamiliesTablesContract.NAME_COLUMN, family.lastName);
+        values.put(FamiliesTablesContract.NAME_COLUMN, family.name);
         values.put(FamiliesTablesContract.VISITORS_COLUMNS, family.visitorsNum);
-        values.put(FamiliesTablesContract.TIME_COLUMN, family.whenInMillis);
+        values.put(FamiliesTablesContract.LENGTH_COLUMN, family.visitLength);
         values.put(FamiliesTablesContract.DATE_COLUMN, family.date);
         return dbHelper.insert(values, FamiliesTablesContract.TABLE_NAME);
     }
 
-    public Cursor query(String tableName, String selection, String args[]) {
-        return dbHelper.query(tableName, selection, args);
+    public Cursor query(String tableName, String selection, String args[], String orderBy) {
+        return dbHelper.query(tableName, selection, args, orderBy);
     }
 
     /* Saves all the current running families into the Temp table*/
     public void saveRunningFamilies(ArrayList<Family> families) {
         ContentValues values = new ContentValues();
         for(Family family : families) {
-            values.put(TempTablesContract.NAME_COLUMN, family.lastName);
+            values.put(TempTablesContract.NAME_COLUMN, family.name);
             values.put(TempTablesContract.VISITORS_COLUMNS, family.visitorsNum);
             values.put(TempTablesContract.CURRENT_TIME_COLUMN, System.currentTimeMillis());
             values.put(TempTablesContract.ADD_DATE_COLUMN, family.date);
             values.put(TempTablesContract.TIME_LEFT_COLUMN, family.timeLeft);
+            values.put(TempTablesContract.LENGTH_COLUMN, family.visitLength);
             dbHelper.insert(values, TempTablesContract.TABLE_NAME);
         }
     }

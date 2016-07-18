@@ -5,15 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <RelativeLayout
+    android:id="@+id/add_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15sp">
+    android:padding="15dp">
 
+    <TextView
+        android:id="@+id/add_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/add_message"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
     <EditText
-        android:id="@+id/family_name"
+        android:id="@+id/full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/add_title"
+        android:maxLines="1"
         android:hint="@string/add_query_hint"/>
 
     <CheckBox
@@ -22,13 +34,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/family_name"
+        android:layout_below="@id/full_name"
         android:layoutDirection="rtl"
+        android:textSize="15sp"
         android:text="@string/add_checkbox_query" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/family_name">
+        android:layout_below="@id/full_name">
 
     <TextView
         android:id="@+id/visitors_text"
@@ -44,8 +57,9 @@
             android:id="@+id/visitors_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="0.75"
-            android:scaleY="0.75"
+            android:scaleX="0.70"
+            android:scaleY="0.70"
+            android:fadingEdge="none"
             android:layout_centerInParent="true" />
     </RelativeLayout>
 </RelativeLayout>

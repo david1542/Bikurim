@@ -1,11 +1,13 @@
 package bikurim.silverfix.com.bikurim.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.Filterable;
 
 import java.util.ArrayList;
@@ -16,28 +18,26 @@ import bikurim.silverfix.com.bikurim.adapters.holders.GenericViewHolder;
 import bikurim.silverfix.com.bikurim.adapters.holders.TimeUpViewHolder;
 import bikurim.silverfix.com.bikurim.models.Family;
 import bikurim.silverfix.com.bikurim.R;
+import bikurim.silverfix.com.bikurim.utils.managers.MediaPlayerManager;
 import bikurim.silverfix.com.bikurim.utils.Utils;
+import bikurim.silverfix.com.bikurim.utils.interfaces.HolderListener;
 import bikurim.silverfix.com.bikurim.utils.managers.CountDownManager;
-import bikurim.silverfix.com.bikurim.utils.interfaces.TimerEventListener;
+import bikurim.silverfix.com.bikurim.utils.interfaces.EventListener;
 
-public class FamiliesAdapter extends RecyclerView.Adapter<GenericViewHolder> implements Filterable, TimerEventListener {
+public class FamiliesAdapter extends GenericAdapter implements Filterable, EventListener, HolderListener {
 
     // last position holds the last position of the element that was added, for animation purposes
     private static int lastPosition = -1;
-    private Context context;
-    private ArrayList<Family> families;
-    private ArrayList<Family> dataSet;
 
     private int[] viewTypes;
 
-    private FamilyFilter filter;
+    private ItemTouchHelper touchHelper;
 
     private CountDownManager countDownManager;
 
-    public FamiliesAdapter(Context context, ArrayList<Family> families) {
-        this.context = context;
-        this.dataSet = families;
-        this.families = dataSet;
+    public FamiliesAdapter(Context context, ArrayList<Family> families, ItemTouchHelper touchHelper) {
+        super(context, families);
+        this.touchHelper = touchHelper;
 
         viewTypes = Constants.Tags.VIEW_TYPES;
 
@@ -49,15 +49,16 @@ public class FamiliesAdapter extends RecyclerView.Adapter<GenericViewHolder> imp
     @Override
     public GenericViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflating the view from a given layout resource file
+        Log.d("A function has called", "onCreateViewHolder() was invoked");
         View v;
         switch (viewType) {
             case Constants.Tags.FAMILY_VIEW:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.family_list_item, parent, false);
-                FamilyViewHolder fvh = new FamilyViewHolder(v, context);
+                v = LayoutInflater.from(context).inflate(R.layout.family_list_item, parent, false);
+                FamilyViewHolder fvh = new FamilyViewHolder(context, v);
                 return fvh;
             case Constants.Tags.TIME_UP_VIEW:
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeup_list_item, parent, false);
-                TimeUpViewHolder tvh = new TimeUpViewHolder(v, context);
+                v = LayoutInflater.from(context).inflate(R.layout.timeup_list_item, parent, false);
+                TimeUpViewHolder tvh = new TimeUpViewHolder(context, v, this);
                 return tvh;
         }
         return null;
@@ -69,15 +70,17 @@ public class FamiliesAdapter extends RecyclerView.Adapter<GenericViewHolder> imp
         Family family = families.get(position);
         holder.bindData(family);
 
-        if(holder instanceof FamilyViewHolder)
-            countDownManager.addHolder((FamilyViewHolder) holder);
+
+        if(holder instanceof FamilyViewHolder){
+            if(!((FamilyViewHolder) holder).isHolderAdded) {
+                countDownManager.addHolder((FamilyViewHolder) holder);
+
+                ((FamilyViewHolder) holder).isHolderAdded = true;
+            }
+        }
+
         // Sets animation on the given view, in case it wasn't displayed before
         Utils.setSlideAnimation(context, holder.getView(), position, lastPosition, false);
-    }
-
-    @Override
-    public int getItemCount() {
-        return families != null ? families.size() : 0;
     }
 
     @Override
@@ -87,89 +90,68 @@ public class FamiliesAdapter extends RecyclerView.Adapter<GenericViewHolder> imp
         return viewTypes[0];
     }
 
-    /* Gets the current the filter object */
-    @Override
-    public Filter getFilter() {
-        if (filter == null)
-            filter = new FamilyFilter();
-        return filter;
-    }
-
     /* Changes the UI of a holder to a time's up view with a flickering ImageButton and a TextView*/
 
     @Override
     public void onFinish(FamilyViewHolder holder) {
-        // Switches between the clock icon to the alarm icon
+        // Resets the holder for future uses
         holder.reset();
+
+        // Play a sound for notifying purposes
+        MediaPlayerManager.playSound(MediaPlayerManager.Sound.END);
+
+        // Vibrates the device for 1.5 seconds
+        Utils.vibrate(context, Constants.Values.VIBRATION_LENGTH);
+
         notifyItemChanged(holder.getAdapterPosition());
     }
 
     @Override
     public void onLessThanMinute(FamilyViewHolder holder) {
-        holder.cardView.setBackgroundResource(R.color.time_up_bg);
-        holder.isBackgroundChanged = true;
+        // if the sound option is on, play a swoosh sound
+        MediaPlayerManager.playSound(MediaPlayerManager.Sound.ALERT);
+        Drawable stroke = ContextCompat.getDrawable(context, R.drawable.family_item_red_stroke);
+        holder.frame.setBackground(stroke);
+
+        Utils.setFadeAnimation(holder.frame);
+        holder.isStrokeChanged = true;
+    }
+
+    @Override
+    public void onRemoveTimeUpViewHolder(int pos, GenericViewHolder holder) {
+        touchHelper.startSwipe(holder);
+        removeData(pos, holder);
     }
 
     public void removeData(int pos, GenericViewHolder holder) {
         // Sets the last position to the given deleted position for animation purposes
         lastPosition = pos;
 
-        // Removes the family object from the data set
         families.remove(pos);
         notifyItemRemoved(pos);
         notifyItemRangeChanged(pos, getItemCount());
 
         if(holder instanceof FamilyViewHolder)
             // Cancels the the timer and removes it from the entry set
-            countDownManager.cancelTimer((FamilyViewHolder) holder);
+            countDownManager.removeHolder((FamilyViewHolder) holder);
 
         holder.reset();
     }
 
 
+
     /* Cancels the timers and clears the entry set */
     public void cancelTimers() {
         countDownManager.reset();
+        countDownManager.clear();
         countDownManager.stop();
     }
 
     /* Clears the adapter's data and resets the last position to -1 */
+    @Override
     public void clearData() {
+        super.clearData();
         cancelTimers();
-        filter = null;
         lastPosition = -1;
-    }
-
-    /* Filter class that queries the constraint on the data set every whenInMillis the user types a key */
-    private class FamilyFilter extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            if (constraint.length() == 0 || constraint == null) {
-                results.values = dataSet;
-                results.count = dataSet.size();
-            } else {
-                ArrayList<Family> queryResults = new ArrayList<Family>();
-                for (Family f : dataSet) {
-                    if (constraint.charAt(0) == f.lastName.toUpperCase().indexOf(0)) {
-                        queryResults.add(f);
-                    } else if (f.lastName.toUpperCase().contains(constraint.toString().toUpperCase())) {
-                        queryResults.add(f);
-                    }
-                }
-                results.values = queryResults;
-                results.count = queryResults.size();
-            }
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            // Now we have to inform the adapter about the new list filtered
-            synchronized (families) {
-                families = (ArrayList<Family>) results.values;
-            }
-            notifyDataSetChanged();
-        }
     }
 }

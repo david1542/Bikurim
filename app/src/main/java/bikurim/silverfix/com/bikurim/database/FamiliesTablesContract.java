@@ -11,8 +11,8 @@ public abstract class FamiliesTablesContract implements BaseColumns {
     public static final String NAME_COLUMN = "name";
     public static final String VISITORS_COLUMNS = "visitors";
     public static final String DATE_COLUMN = "date";
-    public static final String TIME_COLUMN = "time";
+    public static final String LENGTH_COLUMN = "length";
 
     public static final String FAMILIES_COLUMNS[] = {NAME_COLUMN, VISITORS_COLUMNS,
-                                                        DATE_COLUMN, TIME_COLUMN};
+                                                        DATE_COLUMN, LENGTH_COLUMN};
 }

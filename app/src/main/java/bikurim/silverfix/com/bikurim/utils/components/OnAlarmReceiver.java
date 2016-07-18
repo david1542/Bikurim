@@ -1,4 +1,4 @@
-package bikurim.silverfix.com.bikurim.utils;
+package bikurim.silverfix.com.bikurim.utils.components;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.content.Intent;
 
 import bikurim.silverfix.com.bikurim.Constants;
 import bikurim.silverfix.com.bikurim.database.TempTablesContract;
-import bikurim.silverfix.com.bikurim.utils.ReminderService;
-import bikurim.silverfix.com.bikurim.utils.WakeReminderIntentService;
 
 /**
  * Created by דודו on 18/06/2016.

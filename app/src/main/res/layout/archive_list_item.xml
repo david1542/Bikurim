@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+    android:id="@+id/archive_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:background="@color/archive_item_background"
+    android:paddingRight="4dp"
+    android:paddingLeft="4dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/tag_icon"
+            android:id="@+id/time_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/tag"/>
+            android:scaleY="0.75"
+            android:scaleX="0.75"
+            android:src="@drawable/time"/>
+        <TextView
+            style="@style/ArchiveItemText"
+            android:id="@+id/full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/time_icon"
+            android:layout_centerVertical="true"
+            android:text="שם"/>
 
         <TextView
-            android:id="@+id/family_name"
+            style="@style/ArchiveItemText"
+            android:id="@+id/visitors_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/tag_icon"
-            android:textSize="20sp"
-            android:text="שם"/>
+            android:layout_centerInParent="true"
+            android:text="@string/visitors_title"/>
 
         <TextView
             android:id="@+id/family_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/tag_icon"
-            android:layout_below="@id/family_name"
-            android:textSize="15sp"
-            android:text="תאריך"/>
-
-        <ImageView
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/group"/>
-        <TextView
-            android:id="@+id/visitors_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/group"
             android:layout_centerVertical="true"
-            android:textSize="20sp"
-            android:text="מספר מבקרים"/>
+            android:textSize="15sp"
+            android:text="תאריך" />
+
     </RelativeLayout>
 </RelativeLayout>

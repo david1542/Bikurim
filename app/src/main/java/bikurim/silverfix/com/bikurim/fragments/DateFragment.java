@@ -43,7 +43,7 @@ public class DateFragment extends DialogFragment {
         picker = (DatePicker) view.findViewById(R.id.date_picker);
 
         picker.setMaxDate(System.currentTimeMillis());
-        picker.setMinDate(System.currentTimeMillis() - Constants.Intent.MINIMUM_DATE);
+        picker.setMinDate(System.currentTimeMillis() - Constants.Values.MINIMUM_DATE);
         picker.setSpinnersShown(true);
         picker.init(year, month, day, null);
     }

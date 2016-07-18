@@ -21,6 +21,7 @@ import java.util.TimeZone;
 
 import bikurim.silverfix.com.bikurim.Constants;
 import bikurim.silverfix.com.bikurim.R;
+import bikurim.silverfix.com.bikurim.utils.managers.MediaPlayerManager;
 import bikurim.silverfix.com.bikurim.utils.Utils;
 
 /**
@@ -44,7 +45,7 @@ public class AddFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        familyName = (EditText) view.findViewById(R.id.family_name);
+        familyName = (EditText) view.findViewById(R.id.full_name);
         extraTime = (CheckBox) view.findViewById(R.id.check_box);
         extraTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -53,6 +54,7 @@ public class AddFragment extends DialogFragment {
                     Toast.makeText(getContext(), "נוספו 15 דקות הארכת זמן", Toast.LENGTH_SHORT).show();
             }
         });
+
         visitors = (NumberPicker) view.findViewById(R.id.visitors_number);
         visitors.setMaxValue(20);
         visitors.setMinValue(1);
@@ -64,14 +66,15 @@ public class AddFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final View dialogView = getActivity().getLayoutInflater().inflate(R.layout.add_fragment, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.add_message)
-                .setPositiveButton(R.string.proceed_add_dialog, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.proceed_add_dialog, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String input = familyName.getText().toString();
                         if(Utils.checkInput(input))
                             saveState();
-                        else
-                            Toast.makeText(getActivity(), "שם משפחה לא תקין. אנא הכנס שוב", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(getActivity(), R.string.error_message, Toast.LENGTH_SHORT).show();
+                            MediaPlayerManager.playSound(MediaPlayerManager.Sound.ERROR);
+                        }
                         dismiss();
                     }
                 })

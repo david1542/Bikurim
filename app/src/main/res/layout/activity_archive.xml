@@ -2,36 +2,55 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="bikurim.silverfix.com.bikurim.ArchiveActivity">
 
     <include layout="@layout/tool_bar" />
 
     <RelativeLayout
+        android:id="@+id/title_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="10dp">
+        android:background="@color/archive_background">
         <TextView
             android:id="@+id/family_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/name_and_date_title"
-            android:textSize="15sp"/>
+            android:layout_alignParentTop="true"
+            android:text="@string/name_title"
+            android:padding="20dp"
+            style="@style/ArchiveTitle"/>
+
         <TextView
+            android:id="@+id/visitors_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/visitors_title"
+            android:textSize="20sp"
+            android:padding="20dp"
+            style="@style/ArchiveTitle"/>
+
+        <TextView
+            android:id="@+id/date_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="@string/visitors_title"
-            android:textSize="15sp"/>
-    <ListView
+            android:layout_alignParentTop="true"
+            android:text="@string/date_title"
+            android:textSize="20sp"
+            android:padding="20dp"
+            style="@style/ArchiveTitle"/>
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/archive_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/family_title"
-        android:animateLayoutChanges="true"
+        android:layout_marginTop="10dp"
         android:fitsSystemWindows="true"
         android:fadeScrollbars="true"
         android:focusable="true"

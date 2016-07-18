@@ -2,9 +2,13 @@
 <resources>
     <color name="colorPrimary">#0066FF</color>
     <color name="colorPrimaryDark">#E64A19</color>
-    <color name="colorAccent">#33CCCC</color>
-    <color name="colorActivityBackground">#e6e6e6</color>
+    <color name="colorAccent">#2364FC</color>
+    <color name="colorRed">#FF3643</color>
+    <color name="colorActivityBackground">#BDD6FF</color>
+    <color name="archive_background">#ADEBFF</color>
+    <color name="archive_item_background">#5CD1FF</color>
     <color name="menuHeader">#3C92C7</color>
     <color name="menuTextColor">#4D495C</color>
     <color name="time_up_bg">#FFE6E6</color>
+    <color name="empty_text_color">#656B61</color>
 </resources>

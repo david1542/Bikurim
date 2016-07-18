@@ -1,17 +1,16 @@
 <resources>
     <string name="app_name">ביקורים</string>
-    <string name="archive_activity">ארכיון</string>
     <string name="action_settings">הגדרות</string>
     <string name="drawer_name">תפריט</string>
-    <string name="drawer_open">פתוח</string>
+    <string name="drawer_open">תפריט</string>
     <string name="drawer_close">סגור</string>
-    <string name="title_activity_splash">SplashActivity</string>
     <string name="search_hint">חיפוש</string>
     <string name="title_activity_menu">MenuActivity</string>
-    <string name="add_message">מלא את הפרטים הבאים:</string>
+    <string name="add_message"><u>מלא את הפרטים הבאים:</u></string>
+    <string name="error_message">שם לא תקין. אנא נסה שוב</string>
     <string name="proceed_add_dialog">הוסף</string>
     <string name="cancel_add_dialog">בטל</string>
-    <string name="add_query_hint">שם משפחה</string>
+    <string name="add_query_hint">שם מלא</string>
     <string name="add_checkbox_query">הארכת זמן</string>
     <string name="check_box_snackbar">הנוספו 15 דקות הארכת זמן</string>
     <string name="menu_about">אודות</string>
@@ -19,15 +18,17 @@
     <string name="menu_archive">ארכיון</string>
     <string name="action_search_title">חיפוש</string>
     <string name="action_clear_title">איפוס מסד</string>
-    <string name="time_up_message">נגמר הזמן</string>
+    <string name="time_up_message">נגמר הזמן!</string>
     <string name="visitors_message">מספר מבקרים:</string>
     <string name="confirmation_message">האם אתה בטוח שברצונך למחוק?</string>
     <string name="proceed_dialog">אישור</string>
     <string name="cancel_dialog">בטל</string>
     <string name="action_date_title">בחר תאריך</string>
-    <string name="name_and_date_title">שם משפחה/תאריך</string>
-    <string name="visitors_title">מספר מבקרים</string>
+    <string name="name_title"><u>שם מלא</u></string>
+    <string name="date_title"><u>תאריך/שעה</u></string>
+    <string name="visitors_title"><u>מבקרים</u></string>
     <string name="date_picker_message">בחר תאריך:</string>
+    <string name="empty_view_message">הרשימה ריקה. הוסף משפחות</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -36,8 +37,27 @@
     <string name="action_sort_time">מיין מהזמן הנמוך לגבוה</string>
     <string name="action_sort_names">מיין לפי שמות משפחה</string>
     <string name="action_sort_visitors">מיין לפי מספר מבקרים</string>
+    <string name="action_sort_date">מיין לפי תאריך</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_archive_activity">ארכיון</string>
+    <string name="title_activity_about">אודות</string>
+    <string name="title_activity_settings">הגדרות</string>
+    <string name="title_splash_activity">SplashActivity</string>
+
+
+    <!-- Strings related to Settings -->
+    <!--Preferences screen strings -->
+
+    <string name="pref_category">הגדרות כלליות</string>
+
+    <!-- Sounds Checkbox preferences -->
+    <string name="pref_sounds_title">צלילים</string>
+    <string name="pref_sounds_summary">הפעל אפשרות זו אם ברצונך להשתמש בצלילים</string>
+    <string name="pref_sounds_key">soundsOption</string>
+
+    <!-- Vibration checkbox preferences -->
+    <string name="pref_vib_title">רטט</string>
+    <string name="pref_vib_summary">הפעל אפשרות זו אם ברצונך להשתמש ברטט כאשר הזמן נגמר</string>
+    <string name="pref_vib_key">vibrateOption</string>
 </resources>

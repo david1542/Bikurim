@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".FamilyListActivity">
+    tools:context=".ListActivity">
 
     <!-- Overflow items-->
     <item android:id="@+id/action_sort_time"
@@ -27,12 +27,6 @@
         android:orderInCategory="200"
         android:title="@string/action_search_title"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
-    <item
-        android:id="@+id/action_reset"
-        android:icon="@drawable/clear"
-        android:orderInCategory="300"
-        android:title="@string/action_clear_title"
         app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

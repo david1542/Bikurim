@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_category">
+        <bikurim.silverfix.com.bikurim.utils.general.RtlCheckboxPreference
+            android:title="@string/pref_sounds_title"
+            android:summary="@string/pref_sounds_summary"
+            android:defaultValue="true"
+            android:key="@string/pref_sounds_key" />
+
+        <bikurim.silverfix.com.bikurim.utils.general.RtlCheckboxPreference
+            android:title="@string/pref_vib_title"
+            android:summary="@string/pref_vib_summary"
+            android:defaultValue="true"
+            android:key="@string/pref_vib_key" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -25,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     FamiliesTablesContract.NAME_COLUMN + TEXT_TYPE + "," +
                     FamiliesTablesContract.VISITORS_COLUMNS + INT_TYPE + "," +
                     FamiliesTablesContract.DATE_COLUMN + INT_TYPE + "," +
-                    FamiliesTablesContract.TIME_COLUMN + TEXT_TYPE +
+                    FamiliesTablesContract.LENGTH_COLUMN + INT_TYPE +
                     ")";
 
     private static final String SQL_CREATE_TEMP_ENTRIES =
@@ -35,7 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     TempTablesContract.VISITORS_COLUMNS + INT_TYPE + "," +
                     TempTablesContract.CURRENT_TIME_COLUMN + INT_TYPE + "," +
                     TempTablesContract.ADD_DATE_COLUMN + TEXT_TYPE + "," +
-                    TempTablesContract.TIME_LEFT_COLUMN + INT_TYPE +
+                    TempTablesContract.TIME_LEFT_COLUMN + INT_TYPE + "," +
+                    TempTablesContract.LENGTH_COLUMN + INT_TYPE +
                     ")";
 
     private static final String SQL_DELETE_FAMILIES_ENTRIES =
@@ -91,9 +92,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(tableName, values, selection, args);
     }
 
-    public Cursor query(String tableName, String selection, String args[]) {
+    public Cursor query(String tableName, String whereClause, String args[], String orderBy) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.query(tableName, null, selection, args, null, null, null);
+        return db.query(tableName, null, whereClause, args, null, null, orderBy);
     }
     public Cursor getEntries(String tableName) {
         String query = "SELECT * FROM " + tableName;

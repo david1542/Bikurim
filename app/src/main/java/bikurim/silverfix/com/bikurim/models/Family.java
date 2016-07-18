@@ -7,11 +7,13 @@ package bikurim.silverfix.com.bikurim.models;
  */
 public class Family implements Comparable<Family>{
 
-    public String lastName = "";
+    public String name = "";
     public int visitorsNum;
     public long date = 0;
-    public long whenInMillis = 0L;
     public long timeLeft = 0L;
+    public long visitLength = 0L;
+
+    private long whenInMillis;
 
     // A default constructor
     public Family() {
@@ -19,19 +21,25 @@ public class Family implements Comparable<Family>{
     }
 
     // The official constructor of the class
-    public Family(String lastName, int visitorsNum, long whenInMillis, long timeLeft, long date) {
-        this.lastName = lastName;
+    public Family(String lastName, int visitorsNum, long timeLeft, long date, long visitLength) {
+        this.name = lastName;
         this.visitorsNum = visitorsNum;
-        this.whenInMillis = whenInMillis;
         this.timeLeft = timeLeft;
         this.date = date;
+        this.visitLength = visitLength;
+
+        whenInMillis = System.currentTimeMillis() + timeLeft;
     }
 
+
+    public long whenInMillis() {
+        return whenInMillis;
+    }
     // Implementation of compareTo function in order for the list of families to be sortable
 
     @Override
     public int compareTo(Family another) {
-        int comperage = (int) another.whenInMillis;
-        return (int) this.whenInMillis - comperage;
+        int comperage = (int) another.timeLeft;
+        return (int) this.timeLeft - comperage;
     }
 }

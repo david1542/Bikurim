@@ -16,10 +16,13 @@
         android:layout_gravity="center"
         android:background="@android:color/white"
         android:padding="10dp"
-        card_view:cardCornerRadius="3dp">
+        card_view:cardCornerRadius="10dp"
+        card_view:cardPreventCornerOverlap="false">
         <RelativeLayout
+            android:id="@+id/card_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/family_item_blue_stroke"
             android:padding="15dp">
             <ImageView
                 android:id="@+id/family_image"

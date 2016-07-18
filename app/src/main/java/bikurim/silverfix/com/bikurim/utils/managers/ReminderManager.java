@@ -8,7 +8,8 @@ import android.content.Intent;
 import java.util.ArrayList;
 
 import bikurim.silverfix.com.bikurim.Constants;
-import bikurim.silverfix.com.bikurim.utils.OnAlarmReceiver;
+import bikurim.silverfix.com.bikurim.utils.components.OnAlarmReceiver;
+import bikurim.silverfix.com.bikurim.utils.Utils;
 
 /**
  * Created by David on 18/06/2016.
@@ -18,12 +19,13 @@ public class ReminderManager {
     private Context context;
     private AlarmManager alarmManager;
 
-    private ArrayList<Intent> intents;
+    private ArrayList<Integer> idList;
+
     public ReminderManager(Context context) {
         this.context = context;
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        intents = new ArrayList<Intent>();
+        idList = new ArrayList<Integer>();
     }
 
     public void setReminder(Long remindId, String name, long when) {
@@ -34,22 +36,29 @@ public class ReminderManager {
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, when, pi);
 
-        // Adding the current intent to the
-        intents.add(i);
+        int id = Utils.safeLongToInt(remindId);
+        idList.add(id);
     }
 
     /* Cancels a specific reminder by creating a pending intent */
     public void cancelReminder(int remindId) {
-        PendingIntent pi = PendingIntent.getBroadcast(context, remindId, intents.get(remindId-1), PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent i = new Intent(context, OnAlarmReceiver.class);
+        PendingIntent pi = PendingIntent.getBroadcast(context, remindId, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
         alarmManager.cancel(pi);
+        pi.cancel();
     }
 
     /* Cancels all reminders that are scheduled */
     public void cancelAll() {
+        Intent i = new Intent(context, OnAlarmReceiver.class);
         PendingIntent pi;
-        for(Intent i : intents) {
-            pi = PendingIntent.getBroadcast(context, intents.indexOf(i), i, PendingIntent.FLAG_CANCEL_CURRENT);
+        for(int id : idList) {
+            pi = PendingIntent.getBroadcast(context, id, i, PendingIntent.FLAG_CANCEL_CURRENT);
             alarmManager.cancel(pi);
         }
+
+        // Clear the intent list
+        idList.clear();
     }
 }

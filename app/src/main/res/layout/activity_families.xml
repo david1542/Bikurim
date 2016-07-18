@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorActivityBackground"
     android:fitsSystemWindows="true"
-    tools:context=".FamilyListActivity">
+    tools:context=".ListActivity">
 
     <include layout="@layout/tool_bar" />
 
@@ -22,6 +22,7 @@
             android:layout_height="match_parent">
 
             <include layout="@layout/content_families" />
+            <include layout="@layout/empty_layout" />
         </FrameLayout>
 
         <android.support.design.widget.NavigationView
@@ -31,8 +32,10 @@
             android:layout_gravity="start"
             android:layout_marginTop="?attr/actionBarSize"
             android:fitsSystemWindows="true"
+            android:background="@android:color/white"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/menu_drawer" />
+            app:menu="@menu/menu_drawer"
+            app:itemTextAppearance="@style/NavDrawerTextStyle"/>
     </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

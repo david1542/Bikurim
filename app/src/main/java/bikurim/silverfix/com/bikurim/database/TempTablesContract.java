@@ -13,6 +13,7 @@ public abstract class TempTablesContract implements BaseColumns{
     public static final String CURRENT_TIME_COLUMN = "current_time";
     public static final String ADD_DATE_COLUMN = "family_date";
     public static final String TIME_LEFT_COLUMN = "time_left";
+    public static final String LENGTH_COLUMN = "visit_length";
 
     public TempTablesContract() {
 

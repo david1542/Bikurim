@@ -1,4 +1,4 @@
-package bikurim.silverfix.com.bikurim.utils;
+package bikurim.silverfix.com.bikurim.utils.components;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
 
 import bikurim.silverfix.com.bikurim.Constants;
-import bikurim.silverfix.com.bikurim.FamilyListActivity;
+import bikurim.silverfix.com.bikurim.ListActivity;
 import bikurim.silverfix.com.bikurim.R;
 import bikurim.silverfix.com.bikurim.database.TempTablesContract;
 
@@ -20,10 +20,10 @@ public class ReminderService extends WakeReminderIntentService{
     }
     @Override
     void doReminderWork(Intent intent) {
-        // Creates an intent that delivers the user to the FamilyListActivity
+        // Creates an intent that delivers the user to the ListActivity
         long rowId = intent.getExtras().getLong(TempTablesContract._ID);
         String name = intent.getStringExtra(Constants.Intent.FAMILY_NAME);
-        Intent notificationIntent = new Intent(this, FamilyListActivity.class);
+        Intent notificationIntent = new Intent(this, ListActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
 
         // Sets the notification behavior
